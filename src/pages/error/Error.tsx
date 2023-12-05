@@ -7,7 +7,8 @@ const ErrorPage: React.FC = () => {
   let errorMessage: string;
 
   if (isRouteErrorResponse(error)) {
-    errorMessage = error.data.message || error.statusText;
+    errorMessage =
+      error.status + " " + (error.data.message || error.statusText);
   } else if (error instanceof Error) {
     errorMessage = error.message;
   } else if (typeof error === "string") {
@@ -28,10 +29,8 @@ const ErrorPage: React.FC = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="h1">Oops</Typography>
-      <Typography variant="body1">
-        Sorry, an unexpected error has occurred.
-      </Typography>
+      <Typography variant="h2">Oops</Typography>
+      <Typography variant="body1">An unexpected error has occurred.</Typography>
       <Typography variant="body2">{errorMessage}</Typography>
     </Box>
   );

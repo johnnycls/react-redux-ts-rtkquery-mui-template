@@ -1,13 +1,12 @@
-import { Box, IconButton, CircularProgress, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import { useGetAPIDataQuery } from "../../slices/sampleAPISlice";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { toggleMode } from "../../slices/preferenceSlice";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import LoadingElement from "../../components/LoadingElement";
 
-// type HomeProps = {};
-// const Home: React.FC<HomeProps> = ({}) => {
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const isLightMode = useAppSelector((state) => state.preference.isLightMode);
@@ -18,6 +17,8 @@ const Home: React.FC = () => {
     isError: isAPIDataError,
     error: APIDataError,
   } = useGetAPIDataQuery({});
+
+  // const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
   return (
     <Box
@@ -31,13 +32,14 @@ const Home: React.FC = () => {
         {isLightMode ? <Brightness4Icon /> : <Brightness7Icon />}
       </IconButton>
 
-      {isAPIDataLoading ? (
-        <CircularProgress />
-      ) : (
-        <Typography>
-          {isAPIDataError ? JSON.stringify(APIDataError) : apiData?.data}
-        </Typography>
-      )}
+      <LoadingElement
+        isLoading={isAPIDataLoading}
+        component={
+          <Typography>
+            {isAPIDataError ? JSON.stringify(APIDataError) : apiData}
+          </Typography>
+        }
+      />
     </Box>
   );
 };
